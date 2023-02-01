@@ -4,5 +4,6 @@ export function instantiate(element) {
     if (typeof element.type === 'string') {
         return new DomComponent(element);
     }
+    
     return null;
 }
