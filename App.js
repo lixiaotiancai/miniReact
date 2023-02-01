@@ -1,7 +1,11 @@
 import React from 'react';
+import { Counter } from './Counter';
 
 export default function App() {
     return (
-        <p>123</p>
+        <div>
+            <p>123</p>
+            <Counter />
+        </div>
     )
 }
