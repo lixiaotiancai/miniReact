@@ -43,5 +43,7 @@ export default class CompositeComponent {
     }
 
     this.render();
+
+    console.log('🍊', this.renderedElement);
   }
 }
