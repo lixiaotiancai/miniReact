@@ -23,7 +23,7 @@ export class Counter extends Component {
         console.log('🌲', this.state.count);
 
         return (
-            <div>啦啦啦我是counter哟， { this.state.count }</div>
+            <div>啦啦啦我是counter哟 { this.state.count }</div>
         )
     }
 }
