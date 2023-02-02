@@ -13,6 +13,18 @@ export default class DomComponent {
     return this.node;
   }
 
+  unmount() {
+    this.childComponents.forEach(child => {
+        child.unmount();
+    });
+    
+    this.node = null;
+  }
+
+  getHostNode() {
+    return this.node;
+  }
+
   createElement() {
     this.node = document.createElement(this.tag);
   }

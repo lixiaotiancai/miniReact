@@ -11,9 +11,22 @@ export default class CompositeComponent {
     this.instantiate();
     this.render();
 
-    this.renderedComponent = instantiate(this.renderedElement);
+    return this.toMount();
+  }
 
-    return this.renderedComponent.mount();
+  unmount() {
+    this.renderedComponent?.unmount();
+  }
+
+  toMount() {
+    let result = null;
+
+    if (this.renderedElement) {
+      this.renderedComponent = instantiate(this.renderedElement);
+      result = this.renderedComponent.mount();
+    }
+
+    return result;
   }
 
   render () {
@@ -36,12 +49,22 @@ export default class CompositeComponent {
     }
   }
 
+  getHostNode() {
+    return this.renderedComponent?.getHostNode();
+  }
+
   update(state) {
+    
+    // 更新state
     this.instance.state = {
         ...this.instance.state,
         ...state
     }
 
+    // 找到当前叶子节点Dom，并销毁重建 
+    const hostNode = this.getHostNode();
+    
     this.render();
+    console.log(this.renderedElement)
   }
 }
