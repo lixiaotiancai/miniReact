@@ -77,9 +77,8 @@ export default class CompositeComponent {
       const newNode = this.toMount();
       // 替换DOM节点
       hostNode.parentNode.replaceChild(newNode, hostNode);
+      console.log('🍊', hostNode);
+      console.log('🍊🍊', newNode);
     }
-
-    console.log('🍊', hostNode);
-    console.log('🍊🍊', newNode);
   }
 }
