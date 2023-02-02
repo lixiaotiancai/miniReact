@@ -9,6 +9,7 @@ export default class CompositeComponent {
 
   mount () {
     this.instantiate();
+    this.render();
 
     return this.toMount();
   }
@@ -18,8 +19,6 @@ export default class CompositeComponent {
   }
 
   toMount() {
-    this.render();
-
     let result = null;
 
     if (this.renderedElement) {
@@ -67,6 +66,8 @@ export default class CompositeComponent {
     // 找到当前叶子节点Dom，并销毁重建 
     const hostNode = this.getHostNode();
     const newNode = this.toMount();
+
+    this.render();
 
     // 替换DOM节点
     hostNode.parentNode.replaceChild(newNode, hostNode);
