@@ -14,10 +14,10 @@ export default class DomComponent {
   }
 
   unmount() {
-    this.childComponents.forEach(child => {
-        child.unmount();
+    this.childComponents.forEach((child) => {
+      child.unmount();
     });
-    
+
     this.node = null;
   }
 
@@ -64,5 +64,52 @@ export default class DomComponent {
     nodeList.forEach((node) => {
       this.node.appendChild(node);
     });
+  }
+
+  receive(nextElement) {
+    this.updateChildren(nextElement.props);
+
+    this.element = nextElement;
+    this.tag = nextElement.type;
+    this.props = nextElement.props;
+  }
+
+  updateChildren(nextProps) {
+    const prevChildren = this.formatChildren(this.props.children);
+    const nextChildren = this.formatChildren(nextProps.children);
+
+    for (let i = 0; i < nextChildren.length; i++) {
+      const prevChild = prevChildren[i];
+      const nextChild = nextChildren[i];
+      const prevComponent = this.childComponents[i];
+      const nextComponent = instantiate(nextChild);
+
+      if (!nextComponent) {
+        continue;
+      }
+
+      if (prevChild == null) {
+        // 旧的child不存在，说明是新增的场景
+        this.node.appendChild(nextComponent.mount());
+  
+      } else if (prevChild.type === nextChild.type) {
+        // 相同类型的元素，可以直接更新
+        prevComponent.receive(nextChild);
+    
+      } else {
+        // 销毁重建
+        const prevNode = prevComponent.getHostNode();
+        prevComponent.unmount();
+        this.node.replaceChild(nextComponent.mount(), prevNode);
+      }
+    }
+
+    for (let i = nextChildren.length; i < prevChildren.length; i++) {
+      // next里面不存在的，要删除
+      const prevComponent = this.childComponents[i];
+      const prevNode = prevComponent.getHostNode();
+      prevComponent.unmount();
+      this.node.removeChild(prevNode);
+    }
   }
 }

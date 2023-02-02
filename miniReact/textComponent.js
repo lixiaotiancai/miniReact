@@ -20,4 +20,10 @@ export default class TextComponent {
     createElement() {
       this.node = document.createTextNode(this.text);
     }
+
+    receive(nextElement) {
+      this.text = nextElement;
+      // 直接更改文本内容
+      this.node.textContent = this.text;
+    }
   }

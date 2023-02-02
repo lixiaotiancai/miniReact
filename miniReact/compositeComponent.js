@@ -63,14 +63,21 @@ export default class CompositeComponent {
         ...state
     }
 
-    // 找到当前叶子节点Dom，并销毁重建 
-    const hostNode = this.getHostNode();
-    const newNode = this.toMount();
-
+    const preElememt = this.renderedElement;
     this.render();
+    const nextElement = this.renderedElement;
 
-    // 替换DOM节点
-    hostNode.parentNode.replaceChild(newNode, hostNode);
+    if (preElememt.type === nextElement.type) {
+      this.renderedComponent.receive(nextElement);
+  
+    } else {
+      // 找到当前叶子节点Dom，并销毁重建 
+      const hostNode = this.getHostNode();
+      this.unmount();
+      const newNode = this.toMount();
+      // 替换DOM节点
+      hostNode.parentNode.replaceChild(newNode, hostNode);
+    }
 
     console.log('🍊', hostNode);
     console.log('🍊🍊', newNode);
