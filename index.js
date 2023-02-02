@@ -4,4 +4,4 @@ import App from './App';
 
 import './index.css';
 
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<App test={'我是App的props'} />, document.getElementById('root'));
