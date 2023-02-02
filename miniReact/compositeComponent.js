@@ -6,6 +6,7 @@ export default class CompositeComponent {
   }
 
   mount () {
+    this.instantiate();
     this.render();
 
     this.renderedComponent = instantiate(this.renderedElement);
@@ -14,6 +15,18 @@ export default class CompositeComponent {
   }
 
   render () {
-    this.renderedElement = this.component();
+    if (this.instance) {
+        this.renderedElement = this.instance.render();
+      } else {
+        this.renderedElement = this.component();
+      }
+  }
+
+  instantiate() {
+    if (this.component.isClassComponent) {
+      this.instance = new this.component();
+    } else {
+      this.instance = null; // 函数组件不需要实例化
+    }
   }
 }
