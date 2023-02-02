@@ -65,9 +65,11 @@ export default class CompositeComponent {
 
     // 找到当前叶子节点Dom，并销毁重建 
     const hostNode = this.getHostNode();
+    this.unmount();
     const newNode = this.toMount();
 
     this.render();
+
 
     // 替换DOM节点
     hostNode.parentNode.replaceChild(newNode, hostNode);
