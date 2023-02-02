@@ -1,3 +1,4 @@
+import { instanceMap } from "./instanceMap";
 import { instantiate } from "./instantiate";
 
 export default class CompositeComponent {
@@ -25,9 +26,22 @@ export default class CompositeComponent {
 
   instantiate() {
     if (this.component.isClassComponent) {
+
       this.instance = new this.component(this.props);
+
+      instanceMap[this.instance] = this;
+
     } else {
       this.instance = null; // 函数组件不需要实例化
     }
+  }
+
+  update(state) {
+    this.instance.state = {
+        ...this.instance.state,
+        ...state
+    }
+
+    this.render();
   }
 }
