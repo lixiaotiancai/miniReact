@@ -84,10 +84,6 @@ export default class DomComponent {
       const prevComponent = this.childComponents[i];
       const nextComponent = instantiate(nextChild);
 
-      if (!nextComponent) {
-        continue;
-      }
-
       if (prevChild == null) {
         // 旧的child不存在，说明是新增的场景
         this.node.appendChild(nextComponent.mount());
