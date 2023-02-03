@@ -55,6 +55,15 @@ export default class CompositeComponent {
     return this.renderedComponent?.getHostNode();
   }
 
+  receive(nextElement) {
+    this.element = nextElement;
+    this.component = nextElement.type;
+    this.props = nextElement.props;
+    this.instance.props = this.props; // 更新组件的props
+
+    this.update({}); // 递归执行子组件更新
+  }
+
   update(state) {
     
     // 更新state
