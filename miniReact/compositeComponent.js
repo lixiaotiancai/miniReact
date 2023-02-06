@@ -7,14 +7,22 @@ export default class CompositeComponent {
     this.props = element.props;
   }
 
+  execHook(name, ...args) {
+    if (this.instance?.[name]) {
+        this.instance[name].call(this.instance, ...args);
+    }
+  }
+
   mount () {
     this.instantiate();
+    this.execHook('componentWillMount');
     this.render();
 
     return this.toMount();
   }
 
   unmount() {
+    this.execHook('componentWillUnmount');
     this.renderedComponent?.unmount();
   }
 
@@ -26,6 +34,7 @@ export default class CompositeComponent {
       result = this.renderedComponent.mount();
     }
 
+    this.execHook('componentDidMount');
     return result;
   }
 

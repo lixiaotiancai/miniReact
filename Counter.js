@@ -1,7 +1,5 @@
 import React, { Component } from './miniReact/react';
 
-let lock = false;
-
 export class Counter extends Component {
     constructor(props) {
         super(props);
@@ -10,16 +8,15 @@ export class Counter extends Component {
         }
     }
 
-    render() {
-        if (!lock) {
-            lock = true;
-            setInterval(() => {
-                this.setState({
-                    count: this.state.count + 1
-                })
-            }, 3000);
-        }
+    componentDidMount() {
+        setInterval(() => {
+            this.setState({
+                count: this.state.count + 1
+            })
+        }, 3000);
+    }
 
+    render() {
         console.log('🌲', this.state.count);
 
         return (
