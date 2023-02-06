@@ -74,6 +74,30 @@ export default class DomComponent {
     this.props = nextElement.props;
   }
 
+  /**
+   * 同key元素进行比对
+   *
+   * eg:
+   * [p, span] -> [span, p] 类型不同，销毁重建   
+   * [p(key: 1), span(key: 2)] -> [span(key: 2), p(key: 1)] 同key对比，只需移动
+   * 
+   *  移动规则： 
+   
+      // mountIndex: 更新前的index
+      // lastIndex: 标记新节点上次最大的index
+
+      if (child._mountIndex < lastIndex) {
+        return makeMove(child, afterNode, toIndex);
+      }
+      
+   * 
+   * eg:
+   * [A, B, C] -> [B, C, A]
+   * 
+   * B mountIndex = 1, lastIndex = 0, 不满足，不移动， lastIndex -> 1
+   * C mountIndex = 2, lastIndex = 1, 不满足，不移动， lastIndex -> 2
+   * A mountIndex = 0, lastIndex = 2, 满足，移动
+   */
   updateChildren(nextProps) {
     const prevChildren = this.formatChildren(this.props.children);
     const nextChildren = this.formatChildren(nextProps.children);
