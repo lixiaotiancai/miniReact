@@ -65,16 +65,24 @@ export default class CompositeComponent {
   }
 
   receive(nextElement) {
+    this.execHook('componetWillReceiveProps', nextElement.props);
+
     this.element = nextElement;
     this.component = nextElement.type;
     this.props = nextElement.props;
     this.instance.props = this.props; // 更新组件的props
 
     this.update({}); // 递归执行子组件更新
+    this.execHook('componentDidUpdate');
   }
 
   update(state) {
-    
+    const shouldUpdate = this.execHook('componentShouldUpdate')
+
+    if (!shouldUpdate) return;
+  
+    this.execHook('componentWillUpdate');
+
     // 更新state
     this.instance.state = {
         ...this.instance.state,
@@ -98,5 +106,7 @@ export default class CompositeComponent {
       console.log('🍊', hostNode);
       console.log('🍊🍊', newNode);
     }
+
+    this.execHook('componentDidUpdate');
   }
 }
